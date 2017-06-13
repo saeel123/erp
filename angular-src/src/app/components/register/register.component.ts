@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     const user = {
       name: this.name,
       email: this.email,
-      username: this.email,
+      username: this.username,
       password: this.password
     }
 

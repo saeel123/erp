@@ -7,15 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app"
   },
-  "dependencies":{
-    "express": "*",
-    "mongoose": "*",
+  "dependencies": {
     "bcrypt": "*",
-    "cors": "*",
-    "jsonwebtoken": "*",
     "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "permission": "^1.0.4"
   },
   "author": "saeelmacman123@gmail.com",
   "license": "ISC"

@@ -15,9 +15,11 @@ mongoose.connection.on('connected', function () {
 });
 
 const app = express();
-const PORT =  process.env.PORT || 8080;
+const PORT =  process.env.PORT || 3000;
 
 const users = require('./routes/users');
+const brands = require('./routes/brands');
+
 
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,6 +33,7 @@ app.use(passport.session());
 require('./config/passport')(passport);
 
 app.use('/users', users);
+app.use('/brands', brands);
 
 //index routes
 app.get('/', function (req, res) {

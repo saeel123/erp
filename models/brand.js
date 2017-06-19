@@ -10,7 +10,7 @@ const BrandSchema = mongoose.Schema({
   },
   name: {
     type: String,
-    unique: [true, 'test'],
+    unique: true,
     required: [true, 'Brand name is required'],
     lowercase: true
   },

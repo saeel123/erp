@@ -11,21 +11,35 @@ const config = require('../config/database');
 
 router.post('/add', passport.authenticate('jwt', {session: false}), function (req, res, next) {
 
-  console.log(req.user);
-
   let newBrand = new Brand({
+    id: req.body.id,
     name: req.body.name,
     description: req.body.description
   });
 
   Brand.addBrand(newBrand, function (err, brand) {
 
+    var errors = [];
+
     if (err) {
-      if (err.name === 'MongoError' && err.code === 11000) {
-       res.json({success: false, msg: "Brand name already exist" });
-     } else {
-       res.json({success: false, msg: "Failed to Add Brand. " + err.errors['name'].message });
-     }
+      if (err.name === 'ValidationError') {
+
+            if (err.errors['name']) {
+              errors.push(err.errors['name'].message);
+            }
+
+            if (err.errors['id']) {
+              errors.push(err.errors['id'].message);
+            }
+
+      } else {
+        if (err.name === 'MongoError' && err.code === 11000) {
+          errors.push("Brand name Exist");
+        } else {
+          errors.push("Failed to add Please check your input");
+        }
+      }
+      res.json({success: false, msg: errors});
     } else {
       res.json({success: true, msg: "Brand Added Successfully"});
     }

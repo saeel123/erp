@@ -9,8 +9,17 @@ const User = require('../models/user');
 const config = require('../config/database');
 const uuidv4 = require('uuid/v4');
 
+function requireRole (role) {
+    return function (req, res, next) {
+        if (req.user && req.user.type === role) {
+            next();
+        } else {
+            res.json({success: false, msg: "User Unauthorised"});
+        }
+    }
+}
 
-router.post('/add', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+router.post('/add', passport.authenticate('jwt', {session: false}), requireRole(0), function (req, res, next) {
 
   let newBrand = new Brand({
     id: uuidv4(),

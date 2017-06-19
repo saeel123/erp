@@ -5,6 +5,7 @@ var JwtStrategy = require('passport-jwt').Strategy,
 
 module.exports = function(passport){
   var opts = {}
+  var user;
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
   opts.secretOrKey = config.secret;
   passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
@@ -15,6 +16,7 @@ module.exports = function(passport){
           }
           if (user) {
               done(null, user);
+              user = user;
           } else {
               done(null, false);
               // or you could create a new account

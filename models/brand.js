@@ -5,12 +5,11 @@ const config = require('../config/database');
 const BrandSchema = mongoose.Schema({
   id: {
     type: String,
-    unique: true,
     required: [true, 'Brand Id is required']
   },
   name: {
     type: String,
-    unique: true,
+    unique: [true, 'Brand name already exist'],
     required: [true, 'Brand name is required'],
     lowercase: true
   },

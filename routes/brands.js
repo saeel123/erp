@@ -7,18 +7,18 @@ const permission = require('permission');
 const Brand = require('../models/brand');
 const User = require('../models/user');
 const config = require('../config/database');
+const uuidv4 = require('uuid/v4');
 
 
 router.post('/add', passport.authenticate('jwt', {session: false}), function (req, res, next) {
 
   let newBrand = new Brand({
-    id: req.body.id,
+    id: uuidv4(),
     name: req.body.name,
     description: req.body.description
   });
 
   Brand.addBrand(newBrand, function (err, brand) {
-
     var errors = [];
 
     if (err) {
@@ -39,7 +39,9 @@ router.post('/add', passport.authenticate('jwt', {session: false}), function (re
           errors.push("Failed to add Please check your input");
         }
       }
+
       res.json({success: false, msg: errors});
+
     } else {
       res.json({success: true, msg: "Brand Added Successfully"});
     }

@@ -4,11 +4,11 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const permission = require('permission');
 
-
 const Brand = require('../models/brand');
+const User = require('../models/user');
 const config = require('../config/database');
 
-//register
+
 router.post('/add', passport.authenticate('jwt', {session: false}), function (req, res, next) {
 
   console.log(req.user);

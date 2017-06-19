@@ -2,9 +2,16 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const config = require('../config/database');
 
-//user schema
 const UserSchema = mongoose.Schema({
-  name: {
+  id: {
+    type: String,
+    unique: true,
+    required: [true, 'User Id is required']
+  },
+  first_name: {
+    type: String
+  },
+  last_name: {
     type: String
   },
   email: {
@@ -23,6 +30,20 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  address: {
+    type: String,
+    lowercase: true
+  },
+  contact: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        return /\d{3}-\d{3}-\d{4}/.test(v);
+      },
+      message: '{VALUE} is not a valid phone number!'
+    },
+    required: [true, 'User phone number required']
   }
 });
 

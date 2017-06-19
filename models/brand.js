@@ -2,8 +2,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const config = require('../config/database');
 
-//brand schema
 const BrandSchema = mongoose.Schema({
+  id: {
+    type: String,
+    unique: true,
+    required: [true, 'Brand Id is required']
+  },
   name: {
     type: String,
     unique: [true, 'test'],

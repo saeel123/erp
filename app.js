@@ -17,7 +17,7 @@ mongoose.connection.on('connected', function () {
 });
 
 const app = express();
-const PORT =  process.env.PORT || 3000;
+const PORT =  process.env.PORT || 8000;
 
 const users = require('./routes/users');
 const brands = require('./routes/brands');

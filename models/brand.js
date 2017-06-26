@@ -16,6 +16,10 @@ const BrandSchema = mongoose.Schema({
   description: {
     type: String,
     required: true
+  },
+  status: {
+    type: Boolean,
+    default: 1
   }
 });
 
@@ -23,4 +27,14 @@ const Brand = module.exports = mongoose.model('Brand', BrandSchema);
 
 module.exports.addBrand = function (newBrand, callback) {
       newBrand.save(callback);
+}
+
+module.exports.getBrandById = function (id, callback) {
+  const query = {id: id}
+  Brand.findOne(query, callback);
+}
+
+module.exports.deleteBrand = function (brand, callback) {
+  const query = { $set: {status: 0}};
+  brand.update(query, callback);
 }

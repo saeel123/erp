@@ -50,4 +50,33 @@ router.post('/add',passport.authenticate('jwt', {session: false}), middleware.re
 
 });
 
+router.put('/:id', function (req, res, next) {
+  var id = req.params.id;
+
+  if (id) {
+    Brand.getBrandById(id, function (err, brand) {
+      if (err) {
+        res.json({success: false, msg: "No brand available with this ID"});
+      } else {
+
+        if (brand.status === true) {
+          Brand.deleteBrand(brand, function (err, brand) {
+            if (err) {
+              res.json({success: true, msg: "Failed to delete Brand"});
+            } else {
+              res.json({success: true, msg: "Brand Deleted Successfully"});
+            }
+          });
+        } else {
+          res.json({success: false, msg: "Brand Deleted Already"});
+        }
+      }
+    });
+  } else {
+    res.json({success: false, msg: "No brand available with this ID"});
+  }
+});
+
+
+
 module.exports = router;

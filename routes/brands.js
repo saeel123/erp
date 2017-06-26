@@ -8,18 +8,10 @@ const Brand = require('../models/brand');
 const User = require('../models/user');
 const config = require('../config/database');
 const uuidv4 = require('uuid/v4');
+const Role = 0;
+const middleware = require('../middleware.js')(User, Role);
 
-function requireRole (role) {
-    return function (req, res, next) {
-        if (req.user && req.user.type === role) {
-            next();
-        } else {
-            res.json({success: false, msg: "User Unauthorised"});
-        }
-    }
-}
-
-router.post('/add', passport.authenticate('jwt', {session: false}), requireRole(0), function (req, res, next) {
+router.post('/add',passport.authenticate('jwt', {session: false}), middleware.requireAuthorization, function (req, res, next) {
 
   let newBrand = new Brand({
     id: uuidv4(),

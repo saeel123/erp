@@ -5,6 +5,8 @@ const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
+var middleware = require('./middleware.js');
+
 
 //db connection
 mongoose.connect(config.database);

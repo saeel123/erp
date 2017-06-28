@@ -29,6 +29,16 @@ module.exports.addBrand = function (newBrand, callback) {
       newBrand.save(callback);
 }
 
+module.exports.getBrandByName = function (name, callback) {
+  const query = {name: name}
+  Brand.findOne(query, callback);
+}
+
+module.exports.getAllBrands = function (callback) {
+  const query = {status: 1}
+  Brand.find(query, callback);
+}
+
 module.exports.getBrandById = function (id, callback) {
   const query = {id: id}
   Brand.findOne(query, callback);

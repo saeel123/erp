@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 var middleware = require('./middleware.js');
 
-
 //db connection
 mongoose.connect(config.database);
 
@@ -19,9 +18,11 @@ mongoose.connection.on('connected', function () {
 const app = express();
 const PORT =  process.env.PORT || 8000;
 
-const users = require('./routes/users');
 const brands = require('./routes/brands');
-
+const categories = require('./routes/categories');
+const customers = require('./routes/customers');
+const departments = require('./routes/departments');
+const users = require('./routes/users');
 
 //set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,8 +35,11 @@ app.use(passport.session());
 
 require('./config/passport')(passport);
 
-app.use('/users', users);
 app.use('/brands', brands);
+app.use('/categories', categories);
+app.use('/customers', customers);
+app.use('/dapartments', dapartments);
+app.use('/users', users);
 
 //index routes
 app.get('/', function (req, res) {

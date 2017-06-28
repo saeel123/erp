@@ -18,6 +18,10 @@ const CategorySchema = mongoose.Schema({
   description: {
     type: String,
     required: true
+  },
+  status: {
+    type: Boolean,
+    default: 1
   }
 });
 
@@ -25,4 +29,14 @@ const Category = module.exports = mongoose.model('Category', CategorySchema);
 
 module.exports.addCategory = function (newCategory, callback) {
       newCategory.save(callback);
+}
+
+module.exports.getCategoryById = function (id, callback) {
+  const query = {id: id}
+  Category.findOne(query, callback);
+}
+
+module.exports.deleteCategory = function (category, callback) {
+  const query = { $set: {status: 0}};
+  category.update(query, callback);
 }

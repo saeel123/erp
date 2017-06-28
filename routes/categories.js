@@ -4,7 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const permission = require('permission');
 
-const Brand = require('../models/brand');
+const Category = require('../models/category');
 const User = require('../models/user');
 const config = require('../config/database');
 const uuidv4 = require('uuid/v4');
@@ -15,13 +15,13 @@ router.post('/add', passport.authenticate('jwt', {
   session: false
 }), middleware.requireAuthorization, function(req, res, next) {
 
-  let newBrand = new Brand({
+  let newCategory = new Category({
     id: uuidv4(),
     name: req.body.name,
     description: req.body.description
   });
 
-  Brand.addBrand(newBrand, function(err, brand) {
+  Category.addCategory(newCategory, function(err, category) {
     var errors = [];
 
     if (err) {
@@ -37,7 +37,7 @@ router.post('/add', passport.authenticate('jwt', {
 
       } else {
         if (err.name === 'MongoError' && err.code === 11000) {
-          errors.push("Brand name Exist");
+          errors.push("Category name Exist");
         } else {
           errors.push('Failed to add Please check your input');
         }
@@ -51,7 +51,7 @@ router.post('/add', passport.authenticate('jwt', {
     } else {
       res.json({
         success: true,
-        msg: "Brand Added Successfully"
+        msg: "Category Added Successfully"
       });
     }
   });
@@ -62,32 +62,32 @@ router.put('/:id', function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
-    Brand.getBrandById(id, function (err, brand) {
+    Category.getCategoryById(id, function (err, category) {
       if (err) {
         res.json({
           success: false,
-          msg: "No brand available with this ID"
+          msg: "No Category available with this ID"
         });
       } else {
 
-        if (brand.status === true) {
-          Brand.deleteBrand(brand, function (err, brand) {
+        if (category.status === true) {
+          Category.deleteCategory(category, function (err, category) {
             if (err) {
               res.json({
                 success: true,
-                msg: "Failed to delete Brand"
+                msg: "Failed to delete Category"
               });
             } else {
               res.json({
                 success: true,
-                msg: "Brand Deleted Successfully"
+                msg: "Category Deleted Successfully"
               });
             }
           });
         } else {
           res.json({
             success: false,
-            msg: "Brand Deleted Already"
+            msg: "Category Deleted Already"
           });
         }
       }
@@ -95,31 +95,11 @@ router.put('/:id', function (req, res, next) {
   } else {
     res.json({
       success: false,
-      msg: "No brand available with this ID"
+      msg: "No Category available with this ID"
     });
   }
 });
 
-router.get('/', function (req, res, next) {
-    Brand.getAllBrands(function (err, brands) {
-      if (err) {
-        res.json({
-          success: false,
-          msg: "Error Occured while fetching"
-        });
-      } else if (brands.success === true) {
-        res.json({
-          success: false,
-          msg: "Brand Fetched Successfully",
-          data: brands
-        });
-      } else {
-        res.json({
-          success: false,
-          msg: "No Brands Available."
-        });
-      }
-    });
-});
+
 
 module.exports = router;

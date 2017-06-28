@@ -4,8 +4,9 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const permission = require('permission');
 
-const Brand = require('../models/brand');
+const Department = require('../models/department');
 const User = require('../models/user');
+
 const config = require('../config/database');
 const uuidv4 = require('uuid/v4');
 const Role = 0;
@@ -15,13 +16,16 @@ router.post('/add', passport.authenticate('jwt', {
   session: false
 }), middleware.requireAuthorization, function(req, res, next) {
 
-  let newBrand = new Brand({
+  let newDepartment = new Department({
     id: uuidv4(),
     name: req.body.name,
-    description: req.body.description
+    address: req.body.description,
+    contact: req.body.contact,
+    tin: req.body.tin,
+    pan: req.body.pan
   });
 
-  Brand.addBrand(newBrand, function(err, brand) {
+  Department.addDepartment(newDepartment, function(err, department) {
     var errors = [];
 
     if (err) {
@@ -37,7 +41,7 @@ router.post('/add', passport.authenticate('jwt', {
 
       } else {
         if (err.name === 'MongoError' && err.code === 11000) {
-          errors.push("Brand name Exist");
+          errors.push("Dapartment name Exist");
         } else {
           errors.push('Failed to add Please check your input');
         }
@@ -51,7 +55,7 @@ router.post('/add', passport.authenticate('jwt', {
     } else {
       res.json({
         success: true,
-        msg: "Brand Added Successfully"
+        msg: "Department Added Successfully"
       });
     }
   });
@@ -62,32 +66,31 @@ router.put('/:id', function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
-    Brand.getBrandById(id, function (err, brand) {
+    Department.getDepartmentById(id, function (err, department) {
       if (err) {
         res.json({
           success: false,
-          msg: "No brand available with this ID"
+          msg: "No department available with this ID"
         });
       } else {
-
-        if (brand.status === true) {
-          Brand.deleteBrand(brand, function (err, brand) {
+        if (department.status === true) {
+          Department.deleteDepartment(department, function (err, department) {
             if (err) {
               res.json({
                 success: true,
-                msg: "Failed to delete Brand"
+                msg: "Failed to delete Department"
               });
             } else {
               res.json({
                 success: true,
-                msg: "Brand Deleted Successfully"
+                msg: "Department Deleted Successfully"
               });
             }
           });
         } else {
           res.json({
             success: false,
-            msg: "Brand Deleted Already"
+            msg: "Department Deleted Already"
           });
         }
       }
@@ -95,31 +98,9 @@ router.put('/:id', function (req, res, next) {
   } else {
     res.json({
       success: false,
-      msg: "No brand available with this ID"
+      msg: "No Department available with this ID"
     });
   }
-});
-
-router.get('/', function (req, res, next) {
-    Brand.getAllBrands(function (err, brands) {
-      if (err) {
-        res.json({
-          success: false,
-          msg: "Error Occured while fetching"
-        });
-      } else if (brands.success === true) {
-        res.json({
-          success: false,
-          msg: "Brand Fetched Successfully",
-          data: brands
-        });
-      } else {
-        res.json({
-          success: false,
-          msg: "No Brands Available."
-        });
-      }
-    });
 });
 
 module.exports = router;

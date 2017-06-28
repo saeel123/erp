@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const config = require('../config/database');
 
-//brand schema
 const DepartmentSchema = mongoose.Schema({
   id: {
     type: String,
@@ -35,6 +34,10 @@ const DepartmentSchema = mongoose.Schema({
   pan: {
     type: String,
     lowercase: true
+  },
+  status: {
+    type: Boolean,
+    default: 1
   }
 });
 
@@ -42,4 +45,14 @@ const Department = module.exports = mongoose.model('Department', DepartmentSchem
 
 module.exports.addDepartment = function (newDepartment, callback) {
       newDepartment.save(callback);
+}
+
+module.exports.getDepartmentById = function (id, callback) {
+  const query = {id: id}
+  Department.findOne(query, callback);
+}
+
+module.exports.deleteDepartment = function (department, callback) {
+  const query = { $set: {status: 0}};
+  department.update(query, callback);
 }

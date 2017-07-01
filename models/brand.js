@@ -40,11 +40,19 @@ module.exports.getAllBrands = function (callback) {
 }
 
 module.exports.getBrandById = function (id, callback) {
-  const query = {id: id}
+  const query = {id: id , status: 1}
   Brand.findOne(query, callback);
 }
 
 module.exports.deleteBrand = function (brand, callback) {
   const query = { $set: {status: 0}};
   brand.update(query, callback);
+}
+
+module.exports.tailorBrandObj = function (brand) {
+   return brand =  {
+                      id: brand.id,
+                      name: brand.name,
+                      description: brand.description
+                  }
 }

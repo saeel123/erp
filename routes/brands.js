@@ -11,10 +11,7 @@ const uuidv4 = require('uuid/v4');
 const Role = 0;
 const middleware = require('../middleware.js')(User, Role);
 
-router.post('/add', passport.authenticate('jwt', {
-  session: false
-}), middleware.requireAuthorization, function(req, res, next) {
-
+router.post('/add', passport.authenticate('jwt', {session: false}), function(req, res, next) {
   let newBrand = new Brand({
     id: uuidv4(),
     name: req.body.name,
@@ -58,7 +55,7 @@ router.post('/add', passport.authenticate('jwt', {
 
 });
 
-router.put('/:id', function (req, res, next) {
+router.put('delete/:id', function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
@@ -102,21 +99,56 @@ router.put('/:id', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
     Brand.getAllBrands(function (err, brands) {
+
       if (err) {
         res.json({
           success: false,
           msg: "Error Occured while fetching"
         });
-      } else if (brands.success === true) {
+      } else if (brands) {
+        const brandsArray = [];
+
+        for (var i = 0; i < brands.length; i++) {
+          const brandObj = Brand.tailorBrandObj(brands[i]);
+          brandsArray.push(brandObj);
+        }
+
         res.json({
-          success: false,
-          msg: "Brand Fetched Successfully",
-          data: brands
+          success: true,
+          msg: "Brands Fetched Successfully",
+          data: brandsArray
         });
       } else {
         res.json({
           success: false,
           msg: "No Brands Available."
+        });
+      }
+    });
+});
+
+router.get('/:id', function (req, res, next) {
+    var id = req.params.id;
+
+    Brand.getBrandById(id,function (err, brand) {
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Error Occured while fetching"
+        });
+      } else if (brand) {
+
+        const brandObj =  Brand.tailorBrandObj(brand)
+
+        res.json({
+          success: true,
+          msg: "Brand Fetched Successfully",
+          data: brandObj
+        });
+      } else {
+        res.json({
+          success: false,
+          msg: "No Brand Available."
         });
       }
     });

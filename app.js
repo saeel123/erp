@@ -38,7 +38,7 @@ require('./config/passport')(passport);
 app.use('/brands', brands);
 app.use('/categories', categories);
 app.use('/customers', customers);
-app.use('/dapartments', dapartments);
+app.use('/departments', departments);
 app.use('/users', users);
 
 //index routes

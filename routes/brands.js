@@ -55,7 +55,7 @@ router.post('/add', passport.authenticate('jwt', {session: false}), function(req
 
 });
 
-router.put('delete/:id', function (req, res, next) {
+router.put('delete/:id', passport.authenticate('jwt', {session: false}), function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
@@ -97,7 +97,7 @@ router.put('delete/:id', function (req, res, next) {
   }
 });
 
-router.get('/', function (req, res, next) {
+router.get('/', passport.authenticate('jwt', {session: false}), function (req, res, next) {
     Brand.getAllBrands(function (err, brands) {
 
       if (err) {
@@ -127,7 +127,7 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', passport.authenticate('jwt', {session: false}), function (req, res, next) {
     var id = req.params.id;
 
     Brand.getBrandById(id,function (err, brand) {

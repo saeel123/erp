@@ -5,7 +5,7 @@ const config = require('../config/database');
 const UserSchema = mongoose.Schema({
   id: {
     type: String,
-    unique: true,
+    unique: [true, 'Id name already exist'],
     required: [true, 'User Id is required']
   },
   first_name: {
@@ -16,20 +16,22 @@ const UserSchema = mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    unique: [true, 'Email already exist'],
+    required: [true, 'User Id is required']
   },
   username: {
     type: String,
-    required: true
+    unique: [true, 'Username already exist'],
+    required: [true, 'Username is required']
   },
   type: {
     type: Number,
      min: 0, max: 1,
-     required: true
+     required: [true, 'User Type required']
   },
   password: {
     type: String,
-    required: true
+    required: [true, 'password is required']
   },
   address: {
     type: String,

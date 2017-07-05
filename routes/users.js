@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const uuidv4 = require('uuid/v4');
 
 const User = require('../models/user');
 const config = require('../config/database');
@@ -9,14 +10,21 @@ const config = require('../config/database');
 //register
 router.post('/register', function (req, res, next) {
   let newUser = new User({
+    id: uuidv4(),
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
     password: req.body.password,
-    type: req.body.type
+    type: req.body.type,
+    contact: req.body.contact
   });
 
   User.addUser(newUser, function (err, user) {
+
+    console.log(err);
+    console.log(user);
+
+
     if (err) {
       res.json({success: false, msg: "Failed to Register User"});
     } else {

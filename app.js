@@ -35,6 +35,7 @@ app.use(passport.session());
 
 require('./config/passport')(passport);
 
+//Main Routes 
 app.use('/brands', brands);
 app.use('/categories', categories);
 app.use('/customers', customers);

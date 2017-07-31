@@ -36,3 +36,23 @@ const Customer = module.exports = mongoose.model('Customer', CustomerSchema);
 module.exports.addCustomer = function (newCustomer, callback) {
       newCustomer.save(callback);
 }
+
+module.exports.getAllCustomer = function (callback) {
+  Customer.find(callback);
+}
+
+module.exports.getCustomerById = function (id, callback) {
+  const query = {id: id }
+  Customer.findOne(query, callback);
+}
+
+module.exports.tailorCustomerObj = function (customer) {
+   return customer =  {
+                      id: customer.id,
+                      first_name: customer.first_name,
+                      last_name: customer.last_name,
+                      address: customer.address,
+                      contact: customer.contact
+
+                  }
+}

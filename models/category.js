@@ -36,7 +36,20 @@ module.exports.getCategoryById = function (id, callback) {
   Category.findOne(query, callback);
 }
 
+module.exports.getAllCategories = function (callback) {
+  const query = {status: 1}
+  Category.find(query, callback);
+}
+
 module.exports.deleteCategory = function (category, callback) {
   const query = { $set: {status: 0}};
   category.update(query, callback);
+}
+
+module.exports.tailorCategoryObj = function (category) {
+   return category =  {
+                      id: category.id,
+                      name: category.name,
+                      description: category.description
+                  }
 }

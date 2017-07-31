@@ -58,7 +58,7 @@ router.post('/add', passport.authenticate('jwt', {
 
 });
 
-router.put('/:id', function (req, res, next) {
+router.put('delete/:id', function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
@@ -99,6 +99,66 @@ router.put('/:id', function (req, res, next) {
     });
   }
 });
+
+
+router.get('/', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+    Category.getAllCategories(function (err, categories) {
+
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Error Occured while fetching"
+        });
+      } else if (categories) {
+
+        const categoriesArray = [];
+
+        for (var i = 0; i < categories.length; i++) {
+          const categoryObj = Category.tailorCategoryObj(categories[i]);
+          categoriesArray.push(categoryObj);
+        }
+        
+        res.json({
+          success: true,
+          msg: "Categories Fetched Successfully",
+          data: categoriesArray
+        });
+      } else {
+        res.json({
+          success: false,
+          msg: "No Categories Available."
+        });
+      }
+    });
+});
+
+router.get('/:id', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+    var id = req.params.id;
+
+    Category.getCategoryId(id,function (err, category) {
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Error Occured while fetching"
+        });
+      } else if (category) {
+
+        const categoryObj =  Category.tailorCategoryObj(category)
+
+        res.json({
+          success: true,
+          msg: "Category Fetched Successfully",
+          data: categoryObj
+        });
+      } else {
+        res.json({
+          success: false,
+          msg: "No Category Available."
+        });
+      }
+    });
+});
+
 
 
 

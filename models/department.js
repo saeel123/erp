@@ -52,7 +52,20 @@ module.exports.getDepartmentById = function (id, callback) {
   Department.findOne(query, callback);
 }
 
+module.exports.getAllDepartments = function (callback) {
+  const query = {status: 1}
+  Department.find(query, callback);
+}
+
 module.exports.deleteDepartment = function (department, callback) {
   const query = { $set: {status: 0}};
   department.update(query, callback);
+}
+
+module.exports.tailorDepartmentObj = function (department) {
+   return department =  {
+                      id: department.id,
+                      name: department.name,
+                      description: department.description
+                  }
 }

@@ -62,7 +62,7 @@ router.post('/add', passport.authenticate('jwt', {
 
 });
 
-router.put('/:id', function (req, res, next) {
+router.put('delete/:id', function (req, res, next) {
   var id = req.params.id;
 
   if (id) {
@@ -102,5 +102,65 @@ router.put('/:id', function (req, res, next) {
     });
   }
 });
+
+
+router.get('/', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+    Department.getAllDepartments(function (err, departments) {
+
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Error Occured while fetching"
+        });
+      } else if (departments) {
+
+        const departmentsArray = [];
+
+        for (var i = 0; i < departments.length; i++) {
+          const departmentObj = Department.tailorDepartmentObj(departments[i]);
+          departmentsArray.push(departmentObj);
+        }
+
+        res.json({
+          success: true,
+          msg: "Departments Fetched Successfully",
+          data: departmentsArray
+        });
+      } else {
+        res.json({
+          success: false,
+          msg: "No Departments Available."
+        });
+      }
+    });
+});
+
+router.get('/:id', passport.authenticate('jwt', {session: false}), function (req, res, next) {
+    var id = req.params.id;
+
+    Department.getDepartmentId(id,function (err, department) {
+      if (err) {
+        res.json({
+          success: false,
+          msg: "Error Occured while fetching"
+        });
+      } else if (department) {
+
+        const departmentObj =  Department.tailorDepartmentObj(department)
+
+        res.json({
+          success: true,
+          msg: "Department Fetched Successfully",
+          data: departmentObj
+        });
+      } else {
+        res.json({
+          success: false,
+          msg: "No Department Available."
+        });
+      }
+    });
+});
+
 
 module.exports = router;

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const config = require('../config/database');
 
-const SupplierSchema = mongoose.Schema({
+const SaleSchema = mongoose.Schema({
   id: {
     type: String,
     unique: true,
@@ -12,7 +12,7 @@ const SupplierSchema = mongoose.Schema({
     type: String,
     required: [true, 'Customer Id is required']
   },
-  products: [products],
+  products: [],
   tax: {
     type: Number,
     min: 0
@@ -28,6 +28,10 @@ const SupplierSchema = mongoose.Schema({
   transport_amount: {
     type: Number,
     min: 0
+  },
+  status: {
+    type: Boolean,
+    default: 1
   }
 });
 

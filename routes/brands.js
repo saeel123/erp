@@ -10,6 +10,8 @@ const config = require('../config/database');
 const uuidv4 = require('uuid/v4');
 const Role = 0;
 const middleware = require('../middleware.js')(User, Role);
+const validation = require('../validations/validations');
+
 
 router.post('/add', passport.authenticate('jwt', {session: false}), function(req, res, next) {
   let newBrand = new Brand({

@@ -29,6 +29,14 @@ const ProductSchema = mongoose.Schema({
   department_id: {
     type: String,
     required: true
+  },
+  status: {
+    type: Boolean,
+    default: 1
+  },
+  tax: {
+    type: Number,
+    min: 0
   }
 });
 
